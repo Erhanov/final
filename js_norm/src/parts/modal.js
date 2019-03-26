@@ -9,7 +9,14 @@ function modal() {
     overlay.classList.add('.more-splash');
     document.body.style.overflow = 'hidden';
   };
-
+  let message = {
+    loading: 'Loading',
+    success: 'Everything is Fine',
+    failure: 'Smth got wrong'
+  };
+  let form = document.querySelector('.main-form'),
+      input = document.getElementById('tel_input'),
+      statusMessage = document.createElement('div');
   more.addEventListener('click', () => {
     showModal();
   });
@@ -17,6 +24,7 @@ function modal() {
     overlay.style.display = 'none';
     more.classList.remove('.more-splash');
     document.body.style.overflow = '';
+    statusMessage.innerHTML = '';
   });
   descr_btn.forEach(function (item, i, arr) {
     item.addEventListener('click', () => {
@@ -24,14 +32,7 @@ function modal() {
     });
   }); //form
 
-  let message = {
-    loading: 'Loading',
-    success: 'Everything is Fine',
-    failure: 'Smth got wrong'
-  };
-  let form = document.querySelector('.main-form'),
-      input = document.getElementsByTagName('input'),
-      statusMessage = document.createElement('div');
+
   statusMessage.classList.add('status');
 
   let SendForm = (event, form) => {
@@ -67,19 +68,22 @@ function modal() {
     }
   };
 
-  let inputControl = input => {
+  let inputControl = (input) => {
     let firstDigit = input.value.charCodeAt(0);
 
     if (firstDigit > 57 || firstDigit < 42) {
       input.value = '';
     }
 
-    let secondDigit = input.value.charCodeAt(1);
-
-    if (secondDigit > 57 || secondDigit < 48) {
-      input.value = '+';
+    for (let i = 1; i < input.value.length; i++) {
+      if (input.value.charCodeAt(i) > 57 || input.value.charCodeAt(i) < 48) {
+       input.value = '+';
+      }
     }
 
+    let secondDigit = input.value.charCodeAt(1);
+
+   
     console.log(firstDigit);
   };
 

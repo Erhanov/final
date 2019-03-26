@@ -1609,9 +1609,9 @@ function calc() {
   });
   persons.addEventListener('change', function () {
     personsSum = +this.value;
-    total = (daysSum + personsSum) * 4000;
+    total = (daysSum + personsSum) * 4000 * place.options[place.selectedIndex].value;
 
-    if (restDays.value == '' || persons.value == '') {
+    if (restDays.value == '' || persons.value == '' || restDays.value == '0' || persons.value == '0') {
       totalValue.innerHTML = 0;
     } else {
       totalValue.innerHTML = total;
@@ -1621,14 +1621,14 @@ function calc() {
     daysSum = +this.value;
     total = (daysSum + personsSum) * 4000;
 
-    if (restDays.value == '' || persons.value == '') {
+    if (restDays.value == '' || persons.value == '' || restDays.value == '0' || persons.value == '0') {
       totalValue.innerHTML = 0;
     } else {
       totalValue.innerHTML = total;
     }
   });
   place.addEventListener('change', function () {
-    if (restDays.value == '' || persons.value == '') {
+    if (restDays.value == '' || persons.value == '' || restDays.value == '0' || persons.value == '0') {
       totalValue.innerHTML = 0;
     } else {
       var a = total;
@@ -1662,6 +1662,14 @@ function modal() {
     document.body.style.overflow = 'hidden';
   };
 
+  var message = {
+    loading: 'Loading',
+    success: 'Everything is Fine',
+    failure: 'Smth got wrong'
+  };
+  var form = document.querySelector('.main-form'),
+      input = document.getElementById('tel_input'),
+      statusMessage = document.createElement('div');
   more.addEventListener('click', function () {
     showModal();
   });
@@ -1669,6 +1677,7 @@ function modal() {
     overlay.style.display = 'none';
     more.classList.remove('.more-splash');
     document.body.style.overflow = '';
+    statusMessage.innerHTML = '';
   });
   descr_btn.forEach(function (item, i, arr) {
     item.addEventListener('click', function () {
@@ -1676,14 +1685,6 @@ function modal() {
     });
   }); //form
 
-  var message = {
-    loading: 'Loading',
-    success: 'Everything is Fine',
-    failure: 'Smth got wrong'
-  };
-  var form = document.querySelector('.main-form'),
-      input = document.getElementsByTagName('input'),
-      statusMessage = document.createElement('div');
   statusMessage.classList.add('status');
 
   var SendForm = function SendForm(event, form) {
@@ -1726,12 +1727,13 @@ function modal() {
       input.value = '';
     }
 
-    var secondDigit = input.value.charCodeAt(1);
-
-    if (secondDigit > 57 || secondDigit < 48) {
-      input.value = '+';
+    for (var i = 1; i < input.value.length; i++) {
+      if (input.value.charCodeAt(i) > 57 || input.value.charCodeAt(i) < 48) {
+        input.value = '+';
+      }
     }
 
+    var secondDigit = input.value.charCodeAt(1);
     console.log(firstDigit);
   };
 
