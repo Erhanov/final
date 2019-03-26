@@ -35,7 +35,6 @@ function timer() {
         minutes = document.querySelector('.minutes'),
         seconds = document.querySelector('.seconds'),
         timeInterval = setInterval(updateClock, 1000);
-    console.log(getTimeRemain());
 
     function updateClock() {
       let t = getTimeRemain(endTime);

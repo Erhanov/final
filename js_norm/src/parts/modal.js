@@ -62,10 +62,13 @@ function modal() {
     return promise;
   };
 
-  let clearInput = () => {
-    for (let i = 0; i < input.length; i++) {
-      input[i].value = '';
-    }
+  let clearInput = (input) => {
+    input.value = '';
+  };
+
+  let clearInput1 = (input, input1) => {
+    input.value = '';
+    input1.value = '';
   };
 
   let inputControl = (input) => {
@@ -84,23 +87,23 @@ function modal() {
     let secondDigit = input.value.charCodeAt(1);
 
    
-    console.log(firstDigit);
-  };
-
+  }; 
+  let modalInput = document.querySelector('.popup-form__input'),
+      contactForm = document.querySelector('.formContact'),
+      contactInput = document.querySelector('.contact-input'),
+      emailInput = document.querySelector('.emailInput');
   form.addEventListener('submit', function (event) {
-    SendForm(event, form).then(() => statusMessage.innerHTML = message.loading).then(() => statusMessage.innerHTML = message.success).catch(() => statusMessage.innerHTML = message.failure).then(clearInput());
+    SendForm(event, form).then(() => statusMessage.innerHTML = message.loading).then(() => statusMessage.innerHTML = message.success).catch(() => statusMessage.innerHTML = message.failure).then(clearInput(modalInput));
   });
-  let modalInput = document.querySelector('.popup-form__input');
-  console.log(modalInput);
+ 
   modalInput.addEventListener('input', function () {
     inputControl(modalInput);
   });
-  let contactForm = document.querySelector('.formContact');
+
   contactForm.addEventListener('submit', function (event) {
-    SendForm(event, contactForm).then(() => statusMessage.innerHTML = message.loading).then(() => statusMessage.innerHTML = message.success).catch(() => statusMessage.innerHTML = message.failure).then(clearInput());
+    SendForm(event, contactForm).then(() => statusMessage.innerHTML = message.loading).then(() => statusMessage.innerHTML = message.success).catch(() => statusMessage.innerHTML = message.failure).then(clearInput1(contactInput, emailInput));
   });
-  let contactInput = document.querySelector('.contact-input');
-  console.log(contactInput);
+ 
   contactInput.addEventListener('input', function () {
     inputControl(contactInput);
   });

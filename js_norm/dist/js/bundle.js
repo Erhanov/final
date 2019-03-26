@@ -1593,16 +1593,19 @@ function calc() {
       total = 0;
   totalValue.innerHTML = 0;
   persons.addEventListener('input', function () {
-    console.log(persons.value.charCodeAt(0));
-
     if (isNaN(persons.value.charCodeAt(0))) {
       persons.value = '';
     }
   });
+  place.addEventListener('change', function () {
+    if (restDays.value == '' || persons.value == '' || restDays.value == '0' || persons.value == '0') {
+      totalValue.innerHTML = 0;
+    } else {
+      var a = total;
+      totalValue.innerHTML = a * this.options[this.selectedIndex].value;
+    }
+  });
   restDays.addEventListener('input', function () {
-    console.log(restDays);
-    console.log(restDays.value.charCodeAt(0));
-
     if (isNaN(restDays.value.charCodeAt(0))) {
       restDays.value = '';
     }
@@ -1610,6 +1613,7 @@ function calc() {
   persons.addEventListener('change', function () {
     personsSum = +this.value;
     total = (daysSum + personsSum) * 4000 * place.options[place.selectedIndex].value;
+    console.log(place.options[place.selectedIndex].value);
 
     if (restDays.value == '' || persons.value == '' || restDays.value == '0' || persons.value == '0') {
       totalValue.innerHTML = 0;
@@ -1619,20 +1623,12 @@ function calc() {
   });
   restDays.addEventListener('change', function () {
     daysSum = +this.value;
-    total = (daysSum + personsSum) * 4000;
+    total = (daysSum + personsSum) * 4000 * place.options[place.selectedIndex].value;
 
     if (restDays.value == '' || persons.value == '' || restDays.value == '0' || persons.value == '0') {
       totalValue.innerHTML = 0;
     } else {
       totalValue.innerHTML = total;
-    }
-  });
-  place.addEventListener('change', function () {
-    if (restDays.value == '' || persons.value == '' || restDays.value == '0' || persons.value == '0') {
-      totalValue.innerHTML = 0;
-    } else {
-      var a = total;
-      totalValue.innerHTML = a * this.options[this.selectedIndex].value;
     }
   });
 }
@@ -1714,10 +1710,13 @@ function modal() {
     return promise;
   };
 
-  var clearInput = function clearInput() {
-    for (var i = 0; i < input.length; i++) {
-      input[i].value = '';
-    }
+  var clearInput = function clearInput(input) {
+    input.value = '';
+  };
+
+  var clearInput1 = function clearInput1(input, input1) {
+    input.value = '';
+    input1.value = '';
   };
 
   var inputControl = function inputControl(input) {
@@ -1734,9 +1733,12 @@ function modal() {
     }
 
     var secondDigit = input.value.charCodeAt(1);
-    console.log(firstDigit);
   };
 
+  var modalInput = document.querySelector('.popup-form__input'),
+      contactForm = document.querySelector('.formContact'),
+      contactInput = document.querySelector('.contact-input'),
+      emailInput = document.querySelector('.emailInput');
   form.addEventListener('submit', function (event) {
     SendForm(event, form).then(function () {
       return statusMessage.innerHTML = message.loading;
@@ -1744,14 +1746,11 @@ function modal() {
       return statusMessage.innerHTML = message.success;
     }).catch(function () {
       return statusMessage.innerHTML = message.failure;
-    }).then(clearInput());
+    }).then(clearInput(modalInput));
   });
-  var modalInput = document.querySelector('.popup-form__input');
-  console.log(modalInput);
   modalInput.addEventListener('input', function () {
     inputControl(modalInput);
   });
-  var contactForm = document.querySelector('.formContact');
   contactForm.addEventListener('submit', function (event) {
     SendForm(event, contactForm).then(function () {
       return statusMessage.innerHTML = message.loading;
@@ -1759,10 +1758,8 @@ function modal() {
       return statusMessage.innerHTML = message.success;
     }).catch(function () {
       return statusMessage.innerHTML = message.failure;
-    }).then(clearInput());
+    }).then(clearInput1(contactInput, emailInput));
   });
-  var contactInput = document.querySelector('.contact-input');
-  console.log(contactInput);
   contactInput.addEventListener('input', function () {
     inputControl(contactInput);
   });
@@ -1925,7 +1922,6 @@ function timer() {
         minutes = document.querySelector('.minutes'),
         seconds = document.querySelector('.seconds'),
         timeInterval = setInterval(updateClock, 1000);
-    console.log(getTimeRemain());
 
     function updateClock() {
       var t = getTimeRemain(endTime);
