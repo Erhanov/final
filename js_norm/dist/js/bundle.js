@@ -1613,7 +1613,6 @@ function calc() {
   persons.addEventListener('change', function () {
     personsSum = +this.value;
     total = (daysSum + personsSum) * 4000 * place.options[place.selectedIndex].value;
-    console.log(place.options[place.selectedIndex].value);
 
     if (restDays.value == '' || persons.value == '' || restDays.value == '0' || persons.value == '0') {
       totalValue.innerHTML = 0;
